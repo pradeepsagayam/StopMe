@@ -6,7 +6,7 @@
 
     android:padding="4dip">
 
-    <com.dp.stopme.Chronometer
+    <com.dp.stopme.view.Chronometer
         android:id="@+id/chronometer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

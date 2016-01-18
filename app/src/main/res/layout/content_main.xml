@@ -15,29 +15,26 @@
     tools:showIn="@layout/activity_main">
 
 
-    <com.dp.stopme.Chronometer
+    <com.dp.stopme.view.Chronometer
         android:id="@+id/chronometer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="90sp" />
 
-    <TextView
-        android:id="@+id/stoppedTime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="05:78"
-        android:textSize="50sp" />
 
     <TextView
         android:id="@+id/tapToStart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:gravity="center"
-        android:text="Tap to Start"
-        android:textSize="50sp" />
+        android:text="Tap to Start/Stop"
+        android:textSize="30sp" />
+
+    <include
+        android:id="@+id/starComponent"
+        layout="@layout/star_component"/>
 
     <View
         android:layout_width="fill_parent"
@@ -50,8 +47,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
+        android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:text="05:78"
         android:textSize="50sp" />
 
 </LinearLayout>
