@@ -12,7 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.dp.stopme.helper.DataBaseHelper;
 import com.dp.stopme.view.Chronometer;
+import com.stylingandroid.snowfall.SnowView;
 
 import java.util.Calendar;
 import java.util.Random;
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     String stoppedTimeStr, targetTimeStr;
     LinearLayout rootView, starComponent;
     RatingBar ratingBar;
+    SnowView snowView;
     boolean isStarted;
 
     @Override
@@ -41,11 +44,13 @@ public class MainActivity extends AppCompatActivity {
         timeDiTextView = (TextView) findViewById(R.id.timeDiffText);
         poinTextView = (TextView) findViewById(R.id.pointsText);
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        snowView = (SnowView) findViewById(R.id.snowFallView);
         rootView.setOnTouchListener(touchListener);
         tapToStart.setOnClickListener(tapToStartClick);
         targetTimeStr = getRandomTime();
         targetTime.setText(targetTimeStr);
         ratingBar.setStepSize(5);
+        starComponent.setVisibility(View.GONE);
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
     }
@@ -74,31 +79,80 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onChronoMeterStop() {
-        isStarted = false;
+        snowView.setVisibility(View.VISIBLE);
         chronometer.stop();
+        isStarted = false;
         setResults();
         validateResult();
     }
 
     private void setResults() {
         starComponent.setVisibility(View.VISIBLE);
-        timeDiTextView.setText(getTimeDiff());
-        poinTextView.setText(getPoints() + "");
+        timeDiTextView.setText(getTimeDiff() + "");
+        poinTextView.setText(getCurrentPoints() + "");
         ratingBar.setRating(getRating());
     }
 
     private float getRating() {
-        float rating = (float) 2.5;
-
+        float rating;
+        int timeDiff = getTimeDiff();
+        if (timeDiff == 0) {
+            rating = 5;
+        } else if (timeDiff <= 10) {
+            rating = 4;
+        } else if (timeDiff > 10 && timeDiff <= 15) {
+            rating = 3;
+        } else if (timeDiff > 15 && timeDiff <= 20) {
+            rating = 2;
+        } else if (timeDiff > 20 && timeDiff <= 25) {
+            rating = 1;
+        } else {
+            rating = 0;
+        }
         return rating;
     }
 
-    private int getPoints() {
-        int points = 0;
+    private double getCurrentPoints() {
+        double currentPoints;
+        int timeDiff = getTimeDiff();
+        if (timeDiff == 0) {
+            currentPoints = 100;
+        } else if (timeDiff <= 10) {
+            currentPoints = 10;
+        } else if (timeDiff > 10 && timeDiff <= 15) {
+            currentPoints = 5;
+        } else if (timeDiff > 15 && timeDiff <= 20) {
+            currentPoints = 0;
+        } else if (timeDiff > 20 && timeDiff <= 25) {
+            currentPoints = -5;
+        } else {
+            currentPoints = -10;
+        }
+        return currentPoints;
+    }
+
+    private double getPoints(int currentPoints) {
+        double points = Double.parseDouble(DataBaseHelper.retrivePoints(this)) + currentPoints;
+        storePointsToDb(points);
         return points;
     }
 
+    private void storePointsToDb(double points) {
+        DataBaseHelper.addPoints(this, points);
+    }
+
+    private double getAttempts(int currentPoints) {
+        double points = Double.parseDouble(DataBaseHelper.retriveAttempts(this)) + currentPoints;
+        storePointsToDb(points);
+        return points;
+    }
+
+    private void storeAttemptsToDb(double points) {
+        DataBaseHelper.addAttempts(this, points);
+    }
+
     private void onChronoMeterStart() {
+        snowView.setVisibility(View.GONE);
         starComponent.setVisibility(View.GONE);
         isStarted = true;
         targetTimeStr = getRandomTime();
@@ -129,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
 //        stoppedTime.setText(getTimeDiff());
     }
 
-    private String getTimeDiff() {
+    private int getTimeDiff() {
         stoppedTimeStr = chronometer.currentTime;
         String[] stoppedTimeArray = stoppedTimeStr.split(":");
         String[] targetTimeArray = targetTimeStr.split(":");
@@ -144,6 +198,6 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(Integer.parseInt(targetTimeArray[0]));
         System.out.println(Integer.parseInt(stoppedTimeArray[1]));
         System.out.println(Integer.parseInt(targetTimeArray[1]));
-        return timeDiff + "";
+        return timeDiff;
     }
 }

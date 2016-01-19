@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@color/pink"
+        android:minHeight="150dp"
         android:orientation="vertical">
 
 
@@ -48,6 +49,7 @@
             android:layout_marginBottom="5dp"
             android:isIndicator="false"
             android:numStars="5"
+            android:padding="10dp"
             android:stepSize="3.5" />
     </LinearLayout>
 
