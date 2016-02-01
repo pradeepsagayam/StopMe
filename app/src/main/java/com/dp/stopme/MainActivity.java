@@ -1,13 +1,16 @@
 package com.dp.stopme;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -33,8 +36,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         rootView = (LinearLayout) findViewById(R.id.rootView);
         starComponent = (LinearLayout) findViewById(R.id.starComponent);
         chronometer = (Chronometer) findViewById(R.id.chronometer);
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private void onTapEvent() {
+        ((Vibrator) getSystemService(Context.VIBRATOR_SERVICE)).vibrate(50);
         if (isStarted) {
             onChronoMeterStop();
         } else {
@@ -78,7 +80,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    boolean clearanimation;
+
     private void onChronoMeterStop() {
+        clearanimation = true;
         snowView.setVisibility(View.VISIBLE);
         chronometer.stop();
         isStarted = false;
@@ -152,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onChronoMeterStart() {
+        clearanimation = false;
         snowView.setVisibility(View.GONE);
         starComponent.setVisibility(View.GONE);
         isStarted = true;
@@ -160,6 +166,50 @@ public class MainActivity extends AppCompatActivity {
 //            stoppedTime.setVisibility(View.GONE);
 //            stoppedTime.setText("");
         chronometer.start();
+        startAnimation();
+    }
+
+    void startAnimation() {
+        final Animation in = new AlphaAnimation(0.0f, 1.0f);
+        in.setDuration(700);
+        final Animation out = new AlphaAnimation(1.0f, 0.0f);
+        out.setDuration(700);
+        in.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (!clearanimation)
+                    chronometer.startAnimation(out);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        out.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (!clearanimation)
+                    chronometer.startAnimation(in);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        chronometer.startAnimation(in);
     }
 
     private String getRandomTime() {

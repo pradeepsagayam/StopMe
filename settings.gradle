@@ -1,2 +1,2 @@
-include ':app', ':snowFall'
-include ':millisecondChronometer'
+include ':app', ':snowFall'//, ':SimpleRatingBarDemo', ':SimpleRatingBar'
+//include ':millisecondChronometer'

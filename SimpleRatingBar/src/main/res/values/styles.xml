@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SimpleRatingBar">
+        <item name="SRB_maxRating">5</item>
+        <item name="SRB_hideRatingNumber">true</item>
+        <item name="SRB_textColor">@android:color/black</item>
+        <item name="SRB_filledIconColor">@color/yellow_color</item>
+        <item name="SRB_unfilledIconColor">@android:color/darker_gray</item>
+        <item name="SRB_filledIcon">@string/ratingIconHeartFilled</item>
+        <item name="SRB_unfilledIcon">@string/ratingIconHeartOutline</item>
+    </style>
+</resources>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
@@ -10,7 +9,6 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.dp.stopme.MainActivity"
     tools:showIn="@layout/activity_main">
 
@@ -20,6 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:textColor="@android:color/white"
         android:textSize="90sp" />
 
 
@@ -30,25 +29,25 @@
         android:layout_marginTop="40dp"
         android:gravity="center"
         android:text="Tap to Start/Stop"
-        android:textSize="30sp" />
+        android:textColor="@android:color/white"
+        android:textSize="25sp" />
 
     <include
         android:id="@+id/starComponent"
-        layout="@layout/star_component"/>
+        layout="@layout/star_component" />
 
     <View
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:textSize="50sp" />
+        android:layout_weight="1" />
 
     <TextView
         android:id="@+id/targetTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:textSize="50sp" />
+        android:paddingBottom="10dp"
+        android:textColor="@android:color/white"
+        android:textSize="60sp" />
 
 </LinearLayout>
